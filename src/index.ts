@@ -30,7 +30,7 @@ class Stay {
     calculateStayMinutes():number {
         let stayTime = 0;
         if (this.#exitDateTime) {
-            stayTime =  parseFloat(((this.#exitDateTime.getTime() - this.#entryDateTime.getTime())/6000).toFixed(2));
+            stayTime =  parseFloat(((this.#exitDateTime.getTime() - this.#entryDateTime.getTime())/(1000*60)).toFixed(2));
         }
         return stayTime; 
     }
@@ -67,10 +67,34 @@ class ResidentVehicle extends Vehicle{
     }
 
     manageExit(stay:Stay):void{
-        stay.exitDateTime = new Date();//añadir los minutos
-        this.addTimeOfCurrentStay(stay.calculateStayMinutes());//registrar hora de salida en las estancia
+        stay.exitDateTime = new Date();
+        this.addTimeOfCurrentStay(stay.calculateStayMinutes());
     }
 
+}
+
+class OfficialVehicle extends Vehicle{
+
+    constructor(plate:string){
+        super(plate);
+    }
+
+    manageExit(stay:Stay):void{
+        stay.exitDateTime = new Date();
+    }
+}
+
+class NonResidentVehicle extends Vehicle{
+
+    constructor(plate:string){
+        super(plate);
+    }
+
+    manageExit(stay:Stay):void{
+        const priceMinute = 0.002;
+        stay.exitDateTime = new Date();
+        console.log(`El importe que debes abonar es de ${stay.calculateStayMinutes()*priceMinute}`);
+    }
 }
 
 //proceso nueva entrada de vehiculo -> Parking
