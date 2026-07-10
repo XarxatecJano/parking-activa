@@ -30,7 +30,7 @@ class Stay {
     calculateStayMinutes():number {
         let stayTime = 0;
         if (this.#exitDateTime) {
-            stayTime =  this.#exitDateTime.getTime() - this.#entryDateTime.getTime();
+            stayTime =  parseFloat(((this.#exitDateTime.getTime() - this.#entryDateTime.getTime())/6000).toFixed(2));
         }
         return stayTime; 
     }
