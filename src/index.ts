@@ -141,6 +141,7 @@ do {
             vehicle = parking.findVehicle(plate!);
             if(!vehicle) vehicle = new NonResidentVehicle(plate!) 
             parking.addStay(new Stay(vehicle));
+            console.log(parking);
             break;
         
         case 2:
@@ -148,22 +149,26 @@ do {
             const stay: Stay|undefined = parking.findStayToManageExit(plate!);
             if (stay) stay.vehicle.manageExit(stay);
             else console.log(`No hay ningún coche aparcado con esa matrícula en el Parking`);
+            console.log(parking);
+            break;
 
         case 3: 
            plate = prompt("Dame la matrícula");
            vehicle = new OfficialVehicle(plate!);
            parking.addVehicle(vehicle);
+           console.log(parking);
            break;
         
         case 4: 
            plate = prompt("Dame la matrícula");
            vehicle = new ResidentVehicle(plate!);
            parking.addVehicle(vehicle);
+           console.log(parking);
            break;
 
     }
 
-} while(optionChoosed==0);
+} while(optionChoosed!=0);
 
 //proceso nueva entrada de vehiculo -> Parking
 //tendremos que registrar el vehiculo: crear una nueva entrada al que tendremos que pasarle el objeto vehiculo y la hora de entrada
