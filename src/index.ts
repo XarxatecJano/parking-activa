@@ -26,6 +26,14 @@ class Stay {
     set exitDateTime(exitTime: Date){
         this.#exitDateTime = exitTime;
     }
+
+    calculateStayMinutes():number {
+        let stayTime = 0;
+        if (this.#exitDateTime) {
+            stayTime =  this.#exitDateTime.getTime() - this.#entryDateTime.getTime();
+        }
+        return stayTime; 
+    }
 }
 
 class Vehicle {
@@ -58,13 +66,9 @@ class ResidentVehicle extends Vehicle{
         this.#parkedTimeCurrentMonth += minutes;
     }
 
-    calculateStayMinutes(stay:Stay):number {
-        return stay.exitDateTime!.getTime() - stay.entryDateTime.getTime();
-    }
-       
     manageExit(stay:Stay):void{
         stay.exitDateTime = new Date();//añadir los minutos
-        this.addTimeOfCurrentStay(this.calculateStayMinutes(stay));//registrar hora de salida en las estancia
+        this.addTimeOfCurrentStay(stay.calculateStayMinutes());//registrar hora de salida en las estancia
     }
 
 }
