@@ -176,16 +176,14 @@ do {
            plate = prompt("Dame la matrícula");
            vehicle = new ResidentVehicle(plate!);
            parking.addVehicle(vehicle);
-           console.log(parking);
            break;
         
         case 5:
-            
             parking.removeOfficialStays();
             parking.registeredVehicles.forEach(v=>{
                 if(v instanceof ResidentVehicle) v.restartParkingTime();
             });
-            console.log(parking);
+            break;
 
     }
 
