@@ -53,6 +53,7 @@ abstract class Vehicle {
 class ResidentVehicle extends Vehicle{
 
     #parkedTimeCurrentMonth: number = 0;
+    #priceMinuteParking: number = 20;
 
     constructor(plate:string){
         super(plate);
@@ -75,6 +76,10 @@ class ResidentVehicle extends Vehicle{
         this.#parkedTimeCurrentMonth = 0;
     }
 
+    calculatePayment():number{
+        return parseFloat((this.#parkedTimeCurrentMonth * this.#priceMinuteParking).toFixed(2));
+    }
+    
 }
 
 class OfficialVehicle extends Vehicle{
@@ -185,6 +190,12 @@ do {
             });
             break;
 
+        case 6:
+            let report =`MATRÍCULA       TIEMPO ESTACIONADO       IMPORTE\n`;
+            parking.registeredVehicles.forEach(v=>{
+                if (v instanceof ResidentVehicle) report+=`${v.plate}      ${v.parkedTimeCurrentMonth}           ${v.calculatePayment()}\n`;
+            });
+            console.log(report);
     }
 
 } while(optionChoosed!=0);
