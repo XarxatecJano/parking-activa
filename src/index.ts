@@ -71,6 +71,10 @@ class ResidentVehicle extends Vehicle{
         this.addTimeOfCurrentStay(stay.calculateStayMinutes());
     }
 
+    restartParkingTime():void{
+        this.#parkedTimeCurrentMonth = 0;
+    }
+
 }
 
 class OfficialVehicle extends Vehicle{
@@ -91,7 +95,7 @@ class NonResidentVehicle extends Vehicle{
     }
 
     manageExit(stay:Stay):void{
-        const priceMinute = 0.002;
+        const priceMinute = 0.02;
         stay.exitDateTime = new Date();
         console.log(`El importe que debes abonar es de ${stay.calculateStayMinutes()*priceMinute}`);
     }
@@ -100,6 +104,14 @@ class NonResidentVehicle extends Vehicle{
 class Parking {
     #registeredVehicles: Array<Vehicle> = [];
     #stays: Array<Stay> = [];
+
+    get registeredVehicles() {
+       return this.#registeredVehicles;
+    }
+    
+    get stays(){
+        return this.#stays;
+    }
 
     addVehicle(newVehicle: Vehicle){
         this.#registeredVehicles.push(newVehicle);
@@ -125,6 +137,10 @@ class Parking {
     findStayToManageExit(plate: string):Stay|undefined{
         return this.#stays.find(s=>s.vehicle.plate == plate);
     }
+
+    removeOfficialStays(): void {
+      this.#stays = this.#stays.filter(s => !(s.vehicle instanceof OfficialVehicle));
+    }
 }
 
 let optionChoosed: number;
@@ -141,7 +157,6 @@ do {
             vehicle = parking.findVehicle(plate!);
             if(!vehicle) vehicle = new NonResidentVehicle(plate!) 
             parking.addStay(new Stay(vehicle));
-            console.log(parking);
             break;
         
         case 2:
@@ -149,14 +164,12 @@ do {
             const stay: Stay|undefined = parking.findStayToManageExit(plate!);
             if (stay) stay.vehicle.manageExit(stay);
             else console.log(`No hay ningún coche aparcado con esa matrícula en el Parking`);
-            console.log(parking);
             break;
 
         case 3: 
            plate = prompt("Dame la matrícula");
            vehicle = new OfficialVehicle(plate!);
            parking.addVehicle(vehicle);
-           console.log(parking);
            break;
         
         case 4: 
@@ -165,6 +178,14 @@ do {
            parking.addVehicle(vehicle);
            console.log(parking);
            break;
+        
+        case 5:
+            
+            parking.removeOfficialStays();
+            parking.registeredVehicles.forEach(v=>{
+                if(v instanceof ResidentVehicle) v.restartParkingTime();
+            });
+            console.log(parking);
 
     }
 
