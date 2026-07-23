@@ -6,6 +6,11 @@ import { OfficialVehicle } from "./OfficialVehicle.js";
 import { ResidentVehicle } from "./ResidentVehicle.js";
 
 
+
+
+
+/*
+
 let optionChoosed: number;
 const parking = new Parking();
 
@@ -57,3 +62,4 @@ do {
     }
 
 } while(optionChoosed!=0);
+*/
